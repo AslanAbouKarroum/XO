@@ -1,0 +1,56 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-gap: 5px;
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    border: 2px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
+    cursor: pointer;
+}
+
+.message {
+    margin-top: 20px;
+    font-size: 1.5em;
+}
+
+#restart {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+#bottom_div{
+    display: flex;
+}
+
+#restart{
+    margin-left: 250px;
+}
+
+#checkbox_div {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-between;
+    /* height: 100vh; */
+    margin-top: 20px;
+    margin-left: 150px;
+}

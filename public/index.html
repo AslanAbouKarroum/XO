@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XO Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="board" id="board">
+        <div class="cell" data-index="0" id= "0"></div>
+        <div class="cell" data-index="1" id= "1"></div>
+        <div class="cell" data-index="2" id= "2"></div>
+        <div class="cell" data-index="3" id= "3"></div>
+        <div class="cell" data-index="4" id= "4"></div>
+        <div class="cell" data-index="5" id= "5"></div>
+        <div class="cell" data-index="6" id= "6"></div>
+        <div class="cell" data-index="7" id= "7"></div>
+        <div class="cell" data-index="8" id= "8"></div>
+    </div>
+    <div class="message" id="message"></div>
+    <div id="bottom_div">
+        <button id="restart">Restart</button>
+        <div id="checkbox_div">
+            <div id="two_players_div">
+                <input type="checkbox" id="two_players">
+                <label for="two_players">2 Players</label>
+            </div>
+            <div>
+                <input type="radio" name = 'game_type' id="normal">
+                <label for="three_only">Normal</label>
+            </div>
+            <div>
+                <input type="radio" name = 'game_type' id="play_hard">
+                <label for="play_hard">Hard Mode</label>
+            </div>
+            <div id="two_dice_div">
+                <input type="radio" name = 'game_type' id="three_only">
+                <label for="three_only">3 only</label>
+            </div>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>
