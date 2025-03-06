@@ -83,16 +83,35 @@ function checkWin() {
 };
 
 function normal(){
-    let arr =  []; //JSON.parse(JSON.stringify(gameBoard))
-    gameBoard.forEach((e,i)=>{
-        if(e=='') arr.push(i)
-    })
-    console.log(arr)
-    const subtle_index = Math.floor(Math.random()*arr.length);
-    console.log(subtle_index)
-    const index = arr[subtle_index];
+    let index;
+    if(gameBoard.filter(e=>e=='X').length==1 && gameBoard[4]==''){
+        index = 4;
+    }
+    if(gameBoard.filter(e=>e=='X').length==2 && (gameBoard.filter((e,i)=>{if(e=='X'&&(i==0||i==8))return true}).length==2||gameBoard.filter((e,i)=>{if(e=='X'&&(i==2||i==6))return true}).length==2)){ // to prevent karam from winning
+        index = 1;
+    }
+    if(!index){
+        winningConditions.forEach((e,i)=>{
+            if(e.filter(el=>gameBoard[el]=='O').length==2 && e.filter(el=>gameBoard[el]=='').length==1) index = e.filter(el=>gameBoard[el]=='')
+        })
+    }
+    if(!index){
+        winningConditions.forEach((e,i)=>{
+            if(e.filter(el=>gameBoard[el]=='X').length==2 && e.filter(el=>gameBoard[el]=='').length==1) index = e.filter(el=>gameBoard[el]=='')
+        })
+    }
+    if(!index){
+        let arr =  []; //JSON.parse(JSON.stringify(gameBoard))
+        gameBoard.forEach((e,i)=>{
+            if(e=='') arr.push(i)
+        })
+        console.log(arr)
+        const subtle_index = Math.floor(Math.random()*arr.length);
+        console.log(subtle_index)
+        index = arr[subtle_index];
+    }
     gameBoard[index] = currentPlayer;
-    console.log(index)
+    console.log('index '+ index)
     const cell= document.getElementById(index)
     cell.textContent = currentPlayer;
     checkWin();
