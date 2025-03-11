@@ -66,6 +66,24 @@ body {
     /* margin-left: 150px; */
 }
 
+#help{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.circled-question-svg {
+    width: 1.5em;
+    height: 1.5em;
+}
+
+#help_paragraph{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    display: none;
+}
+
 @media screen and (min-width:711px) {
 
     #bottom_div{

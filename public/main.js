@@ -6,6 +6,8 @@ const normal_radio = document.querySelector("#normal")
 const play_hard_radio = document.querySelector('#play_hard');
 const three_only_radio = document.querySelector("#three_only");
 const score_sheet = document.querySelector('#score_sheet'); // didn't use it yet
+const help = document.querySelector('#help');
+const help_paragraph = document.querySelector('#help_paragraph');
 let x_score = 0;
 let o_score = 0;
 const x_score_sheet = document.querySelector('#x');
@@ -257,6 +259,15 @@ function restartGame() {
     o_indices = [];
 }
 
+function help_func(){
+    if (help_paragraph.style.display === "none") {
+        help_paragraph.style.display = "flex"; // Show the paragraph
+      } else {
+        help_paragraph.style.display = "none"; // Hide the paragraph
+      }
+}
+
 normal_radio.checked = true;
 cells.forEach(cell => cell.addEventListener('click', handleCellClick));
 restartButton.addEventListener('click', restartGame);
+help.addEventListener('click',help_func);
