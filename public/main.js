@@ -87,7 +87,7 @@ async function handleCellClick(e) {
             cell.textContent = currentPlayer;
             checkWin();
             x_indices.push(index);
-            console.log('x_indices '+ x_indices)
+            // console.log('x_indices '+ x_indices)
             currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
             if(gameBoard.filter(e=>e=='O').length ==3 && currentPlayer == 'O'){ // check the 3 O case before letting the bot play
                 let index_three_only = o_indices.shift();
@@ -129,8 +129,6 @@ function checkWin() {
             gameActive = false;
             game_check = false;
             gameBoard[a] == 'X' ? ++x_score :  ++o_score
-            console.log(x_score)
-            console.log(o_score)
             gameBoard[a] == 'X' ? x_score_sheet.textContent = x_score :  o_score_sheet.textContent = o_score;
             return;
         };
@@ -166,13 +164,13 @@ function normal_bot(){
         gameBoard.forEach((e,i)=>{
             if(e=='') arr.push(i)
         })
-        console.log(arr)
+        // console.log(arr)
         const subtle_index = Math.floor(Math.random()*arr.length);
-        console.log(subtle_index)
+        // console.log(subtle_index)
         index_normal = arr[subtle_index];
     }
     gameBoard[index_normal] = currentPlayer;
-    console.log('index '+ index_normal)
+    // console.log('index '+ index_normal)
     if(three_only_radio.checked)o_indices.push(index_normal); // for 3 only purposes
     const cell= document.getElementById(index_normal)
     cell.textContent = currentPlayer;
@@ -192,7 +190,7 @@ function hard_bot(){
         winningConditions.forEach((e,i)=>{ // check 2 Os
             if(gameBoard.filter(el=>el!='').length>=6 &&e.filter(el=>gameBoard[el]=='O').length==2 && e.filter(el=>gameBoard[el]=='').length==1){
                  index_hard = e.filter(el=>gameBoard[el]=='')[0] // place the third O in the empty cell
-                }else if(gameBoard.filter(el=>el!='').length>=6 &&e.filter(el=>gameBoard[el]=='O').length==2 && e.filter(el=>gameBoard[el]=='X').length==1 &&!x_indices.includes(e.filter(el=>gameBoard[el]=='')[0])){
+                }else if(gameBoard.filter(el=>el!='').length>=6 &&e.filter(el=>gameBoard[el]=='O').length==2 && e.filter(el=>gameBoard[el]=='X').length==1 &&!x_indices.includes(e.filter(el=>gameBoard[el]=='X')[0])){
                     index_hard = e.filter(el=>gameBoard[el]=='X')[0] // place the third O in the X cell but not the last two
                 }
         })
@@ -202,19 +200,19 @@ function hard_bot(){
             if(e.filter(el=>gameBoard[el]=='X').length==2 && e.filter(el=>gameBoard[el]=='').length==1) index_hard = e.filter(el=>gameBoard[el]=='')[0]
         })
     }
-    console.log(index_hard)
+    // console.log(index_hard)
     if(!index_hard && index_hard!=0){
         let arr =  [];
         gameBoard.forEach((e,i)=>{
             if(e=='') arr.push(i)
         })
-        console.log(arr)
+        // console.log(arr)
         const subtle_index = Math.floor(Math.random()*arr.length);
-        console.log(subtle_index)
+        // console.log(subtle_index)
         index_hard = arr[subtle_index];
     }
     gameBoard[index_hard] = currentPlayer;
-    console.log('index '+ index_hard)
+    // console.log('index '+ index_hard)
     const cell= document.getElementById(index_hard)
     cell.textContent = currentPlayer;
     checkWin();
