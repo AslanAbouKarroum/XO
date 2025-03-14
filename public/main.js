@@ -8,6 +8,7 @@ const three_only_radio = document.querySelector("#three_only");
 const score_sheet = document.querySelector('#score_sheet'); // didn't use it yet
 const help = document.querySelector('#help');
 const help_paragraph = document.querySelector('#help_paragraph');
+const i_icon = document.querySelector('.circled-question-svg')
 let x_score = 0;
 let o_score = 0;
 const x_score_sheet = document.querySelector('#x');
@@ -38,6 +39,7 @@ const winningConditions = [
 async function handleCellClick(e) {
     if(!human_play) return 0; // prevent the user from playing before the bot end his turn 
     checkbox_div.style.visibility= 'hidden';
+    i_icon.style.visibility = 'hidden';
     game_check = true;
     const cell = e.target;
     index = parseInt(cell.dataset.index);
@@ -255,6 +257,7 @@ function restartGame() {
     message.textContent = '';
     cells.forEach(cell => cell.textContent = '');
     checkbox_div.style.visibility= 'visible';
+    i_icon.style.visibility = 'visible';
     x_indices = [];
     o_indices = [];
 }
