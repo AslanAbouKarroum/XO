@@ -62,7 +62,7 @@ async function handleCellClick(e) {
             currentPlayer === human ? human_indices.push(index): bot_indices.push(index);
             if(human_indices.length>2) human_indices.shift();
             if(bot_indices.length>2) bot_indices.shift();
-            ccurrentPlayer = currentPlayer === human ? bot : human;
+            currentPlayer = currentPlayer === human ? bot : human;
         }else if(three_only_radio.checked && gameBoard[index] === '' && gameActive){
             gameBoard[index] = currentPlayer;
             cell.textContent = currentPlayer;
