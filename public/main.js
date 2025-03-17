@@ -146,7 +146,19 @@ function normal_bot(){
     if(gameBoard.filter(e=>e=='X').length==1 && gameBoard[4]==''){
         index_normal = 4;
     }
-    if(gameBoard.filter(e=>e=='X').length==2 && (gameBoard.filter((e,i)=>{if(e=='X'&&(i==0||i==8))return true}).length==2||gameBoard.filter((e,i)=>{if(e=='X'&&(i==2||i==6))return true}).length==2)){ // to prevent karam from winning
+    if(gameBoard.filter(e=>e=='X').length==1 && gameBoard[4]=='X'){
+        index_normal = 2;
+    }
+    if(gameBoard.filter(e=>e=='X').length==1 && gameBoard[3]=='X'){
+        index_normal = 6;
+    }
+    if(gameBoard.filter(e=>e=='X').length==1 && gameBoard[5]=='X'){
+        index_normal = 8;
+    }
+    if(gameBoard.filter(e=>e=='X').length==2 && gameBoard[4]=='' && ((gameBoard[1]=='X'&&gameBoard[3]=='X')||(gameBoard[1]=='X'&&gameBoard[5]=='X')||(gameBoard[3]=='X'&&gameBoard[7]=='X')||(gameBoard[7]=='X'&&gameBoard[5]=='X'))){// to prevent karam from winning
+        index_normal = 4;
+    }
+    if(!index_normal && gameBoard.filter(e=>e=='X').length==2 && (gameBoard.filter((e,i)=>{if(e=='X'&&(i==0||i==8))return true}).length==2||gameBoard.filter((e,i)=>{if(e=='X'&&(i==2||i==6))return true}).length==2)){ // to prevent karam from winning
         index_normal = 1;
     }
     if(!index_normal){
