@@ -2,24 +2,28 @@ const cells = document.querySelectorAll('.cell');
 const message = document.getElementById('message');
 const restartButton = document.getElementById('restart');
 const two_players_checkbox = document.querySelector("#two_players");
+const two_players_div = document.querySelector("#two_players_div");
+const bot_starts_checkbox = document.querySelector("#bot_starts");
+const bot_starts_div = document.querySelector("#bot_starts_div");
 const normal_radio = document.querySelector("#normal")
 const play_hard_radio = document.querySelector('#play_hard');
 const three_only_radio = document.querySelector("#three_only");
-const score_sheet = document.querySelector('#score_sheet'); // didn't use it yet
+const score_sheet = document.querySelector('#score_sheet'); // didn't use it yet 
 const help = document.querySelector('#help');
 const help_paragraph = document.querySelector('#help_paragraph');
 const i_icon = document.querySelector('.circled-question-svg')
-let x_score = 0;
-let o_score = 0;
-const x_score_sheet = document.querySelector('#x');
-const o_score_sheet = document.querySelector('#o');
-x_score_sheet.textContent = x_score;
-o_score_sheet.textContent = o_score;
+let human_score = 0;
+let bot_score = 0;
+const human_score_sheet = document.querySelector('#x');
+const bot_score_sheet = document.querySelector('#o');
+human_score_sheet.textContent = human_score;
+bot_score_sheet.textContent = bot_score;
 let index;
-let x_indices = [];
-let o_indices = [];
-
-let currentPlayer = 'X';
+let human_indices = [];
+let bot_indices = [];
+let human = 'X';
+let bot = 'O';
+let currentPlayer = human;
 let gameBoard = ['', '', '', '', '', '', '', '', ''];
 let gameActive = true;
 let game_check = true;
@@ -38,6 +42,7 @@ const winningConditions = [
 
 async function handleCellClick(e) {
     if(!human_play) return 0; // prevent the user from playing before the bot end his turn 
+    help_paragraph.style.display = "none"; // Hide the paragraph
     checkbox_div.style.visibility= 'hidden';
     i_icon.style.visibility = 'hidden';
     game_check = true;
@@ -49,20 +54,20 @@ async function handleCellClick(e) {
         gameBoard[index] = currentPlayer;
         cell.textContent = currentPlayer;
         checkWin();
-        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-        }else if(play_hard_radio.checked && (gameBoard[index] === '' || (gameBoard.filter(e=>e!='').length>=6 && gameBoard[index] !== currentPlayer && !x_indices.includes(index) && !o_indices.includes(index)))&& gameActive){
+        currentPlayer = currentPlayer === human ? bot : human;
+        }else if(play_hard_radio.checked && (gameBoard[index] === '' || (gameBoard.filter(e=>e!='').length>=6 && gameBoard[index] !== currentPlayer && !human_indices.includes(index) && !bot_indices.includes(index)))&& gameActive){
             gameBoard[index] = currentPlayer;
             cell.textContent = currentPlayer;
             checkWin();
-            currentPlayer === 'X' ? x_indices.push(index): o_indices.push(index);
-            if(x_indices.length>2) x_indices.shift();
-            if(o_indices.length>2) o_indices.shift();
-            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            currentPlayer === human ? human_indices.push(index): bot_indices.push(index);
+            if(human_indices.length>2) human_indices.shift();
+            if(bot_indices.length>2) bot_indices.shift();
+            ccurrentPlayer = currentPlayer === human ? bot : human;
         }else if(three_only_radio.checked && gameBoard[index] === '' && gameActive){
             gameBoard[index] = currentPlayer;
             cell.textContent = currentPlayer;
             checkWin();
-            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            currentPlayer = currentPlayer === human ? bot : human;
             three_only();
         }
     }else if(!two_players_checkbox.checked){
@@ -71,26 +76,25 @@ async function handleCellClick(e) {
             gameBoard[index] = currentPlayer;
             cell.textContent = currentPlayer;
             checkWin();
-            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            currentPlayer = currentPlayer === human ? bot : human;
             setTimeout(timeout_function, 2000);//normal_bot()
-        }else if(play_hard_radio.checked && (gameBoard[index] === '' || (gameBoard.filter(e=>e!='').length>=6 && gameBoard[index] !== currentPlayer && !x_indices.includes(index) && !(o_indices.includes(index))))&& gameActive){
+        }else if(play_hard_radio.checked && (gameBoard[index] === '' || (gameBoard.filter(e=>e!='').length>=6 && gameBoard[index] !== currentPlayer && !human_indices.includes(index) && !(bot_indices.includes(index))))&& gameActive){
             gameBoard[index] = currentPlayer;
             cell.textContent = currentPlayer;
             checkWin();
-            currentPlayer === 'X' ? x_indices.push(index): o_indices.push(index);
-            if(x_indices.length>2) x_indices.shift();
-            if(o_indices.length>2) o_indices.shift();
-            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            currentPlayer === human ? human_indices.push(index): bot_indices.push(index);
+            if(human_indices.length>2) human_indices.shift();
+            if(bot_indices.length>2) bot_indices.shift();
+            currentPlayer = currentPlayer === human ? bot : human;
             setTimeout(timeout_function, 2000);//hard_bot()
         }else if(three_only_radio.checked && gameBoard[index] === '' && gameActive){
             gameBoard[index] = currentPlayer;
             cell.textContent = currentPlayer;
             checkWin();
-            x_indices.push(index);
-            // console.log('x_indices '+ x_indices)
-            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-            if(gameBoard.filter(e=>e=='O').length ==3 && currentPlayer == 'O'){ // check the 3 O case before letting the bot play
-                let index_three_only = o_indices.shift();
+            human_indices.push(index);
+            currentPlayer = currentPlayer === human ? bot : human;
+            if(gameBoard.filter(e=>e==bot).length ==3 && currentPlayer == bot){ // check the 3 O case before letting the bot play
+                let index_three_only = bot_indices.shift();
                 gameBoard[index_three_only] ='';
                 const cell= document.getElementById(index_three_only);
                 cell.textContent = '';
@@ -128,8 +132,13 @@ function checkWin() {
             message.textContent = `${gameBoard[a]} wins!`;
             gameActive = false;
             game_check = false;
-            gameBoard[a] == 'X' ? ++x_score :  ++o_score
-            gameBoard[a] == 'X' ? x_score_sheet.textContent = x_score :  o_score_sheet.textContent = o_score;
+            if(bot_starts_checkbox.checked){
+                gameBoard[a] == human ? ++bot_score :  ++human_score;
+                gameBoard[a] == human ? bot_score_sheet.textContent = bot_score :  human_score_sheet.textContent = human_score;
+            }else{
+                gameBoard[a] == human ? ++human_score :  ++bot_score;
+                gameBoard[a] == human ? human_score_sheet.textContent = human_score :  bot_score_sheet.textContent = bot_score;
+            }
             return;
         };
     };
@@ -143,32 +152,32 @@ function checkWin() {
 
 function normal_bot(){
     let index_normal;
-    if(gameBoard.filter(e=>e=='X').length==1 && gameBoard[4]==''){
+    if(gameBoard.filter(e=>e==human).length==1 && gameBoard[4]==''){
         index_normal = 4;
     }
-    if(gameBoard.filter(e=>e=='X').length==1 && gameBoard[4]=='X'){
+    if(gameBoard.filter(e=>e==human).length==1 && gameBoard[4]==human){
         index_normal = 2;
     }
-    if(gameBoard.filter(e=>e=='X').length==1 && gameBoard[3]=='X'){
+    if(gameBoard.filter(e=>e==human).length==1 && gameBoard[3]==human){
         index_normal = 6;
     }
-    if(gameBoard.filter(e=>e=='X').length==1 && gameBoard[5]=='X'){
+    if(gameBoard.filter(e=>e==human).length==1 && gameBoard[5]==human){
         index_normal = 8;
     }
-    if(gameBoard.filter(e=>e=='X').length==2 && gameBoard[4]=='' && ((gameBoard[1]=='X'&&gameBoard[3]=='X')||(gameBoard[1]=='X'&&gameBoard[5]=='X')||(gameBoard[3]=='X'&&gameBoard[7]=='X')||(gameBoard[7]=='X'&&gameBoard[5]=='X'))){// to prevent karam from winning
+    if(gameBoard.filter(e=>e==human).length==2 && gameBoard[4]=='' && ((gameBoard[1]==human&&gameBoard[3]==human)||(gameBoard[1]==human&&gameBoard[5]==human)||(gameBoard[3]==human&&gameBoard[7]==human)||(gameBoard[7]==human&&gameBoard[5]==human))){// to prevent karam from winning
         index_normal = 4;
     }
-    if(!index_normal && gameBoard.filter(e=>e=='X').length==2 && (gameBoard.filter((e,i)=>{if(e=='X'&&(i==0||i==8))return true}).length==2||gameBoard.filter((e,i)=>{if(e=='X'&&(i==2||i==6))return true}).length==2)){ // to prevent karam from winning
+    if(!index_normal && gameBoard.filter(e=>e==human).length==2 && (gameBoard.filter((e,i)=>{if(e==human&&(i==0||i==8))return true}).length==2||gameBoard.filter((e,i)=>{if(e==human&&(i==2||i==6))return true}).length==2)){ // to prevent karam from winning
         index_normal = 1;
     }
     if(!index_normal){
         winningConditions.forEach((e,i)=>{ // check 2 Os
-            if(e.filter(el=>gameBoard[el]=='O').length==2 && e.filter(el=>gameBoard[el]=='').length==1) index_normal = e.filter(el=>gameBoard[el]=='')[0]
+            if(e.filter(el=>gameBoard[el]==bot).length==2 && e.filter(el=>gameBoard[el]=='').length==1) index_normal = e.filter(el=>gameBoard[el]=='')[0]
         })
     }
     if(!index_normal && index_normal!=0){ // check 2 Xs
         winningConditions.forEach((e,i)=>{
-            if(e.filter(el=>gameBoard[el]=='X').length==2 && e.filter(el=>gameBoard[el]=='').length==1) index_normal = e.filter(el=>gameBoard[el]=='')[0]
+            if(e.filter(el=>gameBoard[el]==human).length==2 && e.filter(el=>gameBoard[el]=='').length==1) index_normal = e.filter(el=>gameBoard[el]=='')[0]
         })
     }
     if(!index_normal && index_normal!=0){
@@ -183,33 +192,33 @@ function normal_bot(){
     }
     gameBoard[index_normal] = currentPlayer;
     // console.log('index '+ index_normal)
-    if(three_only_radio.checked)o_indices.push(index_normal); // for 3 only purposes
+    if(three_only_radio.checked)bot_indices.push(index_normal); // for 3 only purposes
     const cell= document.getElementById(index_normal)
     cell.textContent = currentPlayer;
     checkWin();
-    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+    currentPlayer = currentPlayer === human ? bot : human;
 }
 
 function hard_bot(){
     let index_hard;
-    if(gameBoard.filter(e=>e=='X').length==1 && gameBoard[4]==''){
+    if(gameBoard.filter(e=>e==human).length==1 && gameBoard[4]==''){
         index_hard = 4;
     }
-    if(gameBoard.filter(e=>e=='X').length==2 && (gameBoard.filter((e,i)=>{if(e=='X'&&(i==0||i==8))return true}).length==2||gameBoard.filter((e,i)=>{if(e=='X'&&(i==2||i==6))return true}).length==2)){ // to prevent karam from winning
+    if(gameBoard.filter(e=>e==human).length==2 && (gameBoard.filter((e,i)=>{if(e==human&&(i==0||i==8))return true}).length==2||gameBoard.filter((e,i)=>{if(e==human&&(i==2||i==6))return true}).length==2)){ // to prevent karam from winning
         index_hard = 1;
     }
     if(!index_hard){
         winningConditions.forEach((e,i)=>{ // check 2 Os
-            if(gameBoard.filter(el=>el!='').length>=6 &&e.filter(el=>gameBoard[el]=='O').length==2 && e.filter(el=>gameBoard[el]=='').length==1){
+            if(gameBoard.filter(el=>el!='').length>=6 &&e.filter(el=>gameBoard[el]==bot).length==2 && e.filter(el=>gameBoard[el]=='').length==1){
                  index_hard = e.filter(el=>gameBoard[el]=='')[0] // place the third O in the empty cell
-                }else if(gameBoard.filter(el=>el!='').length>=6 &&e.filter(el=>gameBoard[el]=='O').length==2 && e.filter(el=>gameBoard[el]=='X').length==1 &&!x_indices.includes(e.filter(el=>gameBoard[el]=='X')[0])){
-                    index_hard = e.filter(el=>gameBoard[el]=='X')[0] // place the third O in the X cell but not the last two
+                }else if(gameBoard.filter(el=>el!='').length>=6 &&e.filter(el=>gameBoard[el]==bot).length==2 && e.filter(el=>gameBoard[el]==human).length==1 &&!human_indices.includes(e.filter(el=>gameBoard[el]==human)[0])){
+                    index_hard = e.filter(el=>gameBoard[el]==human)[0] // place the third O in the X cell but not the last two
                 }
         })
     }
     if(!index_hard && index_hard!=0){
         winningConditions.forEach((e)=>{ // check 2 Xs
-            if(e.filter(el=>gameBoard[el]=='X').length==2 && e.filter(el=>gameBoard[el]=='').length==1) index_hard = e.filter(el=>gameBoard[el]=='')[0]
+            if(e.filter(el=>gameBoard[el]==human).length==2 && e.filter(el=>gameBoard[el]=='').length==1) index_hard = e.filter(el=>gameBoard[el]=='')[0]
         })
     }
     // console.log(index_hard)
@@ -228,21 +237,21 @@ function hard_bot(){
     const cell= document.getElementById(index_hard)
     cell.textContent = currentPlayer;
     checkWin();
-    o_indices.push(index_hard);
-    if(o_indices.length>2) o_indices.shift();
-    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+    bot_indices.push(index_hard);
+    if(bot_indices.length>2) bot_indices.shift();
+    currentPlayer = currentPlayer === human ? bot : human;
 }
 
 function three_only(){
-    if(currentPlayer=='O')x_indices.push(index);
-    if(currentPlayer=='X')o_indices.push(index);
-    if(gameBoard.filter(e=>e=='X').length ==3 && currentPlayer == 'X'){
-        let index_three_only = x_indices.shift();
+    if(currentPlayer==bot)human_indices.push(index);
+    if(currentPlayer==human)bot_indices.push(index);
+    if(gameBoard.filter(e=>e==human).length ==3 && currentPlayer == human){
+        let index_three_only = human_indices.shift();
         gameBoard[index_three_only] ='';
         const cell= document.getElementById(index_three_only);
         cell.textContent = '';
-    }else if(gameBoard.filter(e=>e=='O').length ==3 && currentPlayer == 'O'){
-        let index_three_only = o_indices.shift();
+    }else if(gameBoard.filter(e=>e==bot).length ==3 && currentPlayer == bot){
+        let index_three_only = bot_indices.shift();
         gameBoard[index_three_only] ='';
         const cell= document.getElementById(index_three_only);
         cell.textContent = '';
@@ -251,8 +260,8 @@ function three_only(){
 
 async function three_only_bot(){
     normal_bot();
-    if(gameBoard.filter(e=>e=='X').length ==3 && currentPlayer == 'X'){  // check the 3 X case
-        let index_three_only = x_indices.shift();
+    if(gameBoard.filter(e=>e==human).length ==3 && currentPlayer == human){
+        let index_three_only = human_indices.shift();
         gameBoard[index_three_only] ='';
         const cell= document.getElementById(index_three_only);
         cell.textContent = '';
@@ -263,13 +272,30 @@ function restartGame() {
     game_check = false; // to prevent the bot from playing when the user press restart
     gameBoard = ['', '', '', '', '', '', '', '', ''];
     gameActive = true;
-    currentPlayer = 'X';
+    currentPlayer = human;
     message.textContent = '';
     cells.forEach(cell => cell.textContent = '');
     checkbox_div.style.visibility= 'visible';
     i_icon.style.visibility = 'visible';
-    x_indices = [];
-    o_indices = [];
+    human_indices = [];
+    bot_indices = [];
+    if(bot_starts_checkbox.checked){
+        let arr =  [];
+        gameBoard.forEach((e,i)=>{
+            if(e=='') arr.push(i)
+        })
+        const subtle_index = Math.floor(Math.random()*arr.length);
+        let index_hard = arr[subtle_index];
+        human = 'O';
+        bot = 'X';
+        currentPlayer = bot;
+        gameBoard[index_hard] = currentPlayer;
+        const cell= document.getElementById(index_hard)
+        cell.textContent = currentPlayer;
+        bot_indices.push(index_hard);
+        currentPlayer = currentPlayer === human ? bot : human;
+        help_paragraph.style.display = "none"; // Hide the paragraph
+    }
 }
 
 function help_func(){
@@ -280,6 +306,21 @@ function help_func(){
       }
 }
 
+function toggle(){ // to prevent the user from checking both 2 players and bot starts
+    if(two_players_checkbox.checked){
+        bot_starts_div.style.display = 'none';
+    }else{
+        bot_starts_div.style.display = 'block';
+    }
+    if(bot_starts_checkbox.checked){
+        two_players_div.style.display = 'none';
+    }else{
+        two_players_div.style.display = 'block';
+    }
+}
+
+two_players_checkbox .addEventListener('click', toggle)
+bot_starts_checkbox.addEventListener('click',toggle)
 normal_radio.checked = true;
 cells.forEach(cell => cell.addEventListener('click', handleCellClick));
 restartButton.addEventListener('click', restartGame);
