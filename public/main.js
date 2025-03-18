@@ -155,13 +155,13 @@ function normal_bot(){
     if(gameBoard.filter(e=>e==human).length==1 && gameBoard[4]==''){
         index_normal = 4;
     }
-    if(gameBoard.filter(e=>e==human).length==1 && gameBoard[4]==human){
+    if(gameBoard.filter(e=>e==human).length==1 && gameBoard[4]==human && gameBoard[2]==''){
         index_normal = 2;
     }
-    if(gameBoard.filter(e=>e==human).length==1 && gameBoard[3]==human){
+    if(gameBoard.filter(e=>e==human).length==1 && gameBoard[3]==human&& gameBoard[6]==''){
         index_normal = 6;
     }
-    if(gameBoard.filter(e=>e==human).length==1 && gameBoard[5]==human){
+    if(gameBoard.filter(e=>e==human).length==1 && gameBoard[5]==human && gameBoard[8]==''){
         index_normal = 8;
     }
     if(gameBoard.filter(e=>e==human).length==2 && gameBoard[4]=='' && ((gameBoard[1]==human&&gameBoard[3]==human)||(gameBoard[1]==human&&gameBoard[5]==human)||(gameBoard[3]==human&&gameBoard[7]==human)||(gameBoard[7]==human&&gameBoard[5]==human))){// to prevent karam from winning
@@ -279,6 +279,10 @@ function restartGame() {
     i_icon.style.visibility = 'visible';
     human_indices = [];
     bot_indices = [];
+    if(!bot_starts_checkbox.checked){
+        human = 'X';
+        bot = 'O';
+    }
     if(bot_starts_checkbox.checked){
         let arr =  [];
         gameBoard.forEach((e,i)=>{
