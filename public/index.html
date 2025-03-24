@@ -38,25 +38,29 @@
         </div>
         <button id="restart">Restart</button>
         <div id="checkbox_div">
-            <div id="two_players_div">
-                <input type="checkbox" id="two_players">
-                <label for="two_players">2 Players</label>
+            <div id="checkbox_div1">
+                <div id="two_players_div">
+                    <input type="checkbox" id="two_players">
+                    <label for="two_players">2 Players</label>
+                </div>
+                <div id="bot_starts_div">
+                    <input type="checkbox" id="bot_starts">
+                    <label for="bot_starts">Bot Starts</label>
+                </div>
             </div>
-            <div id="bot_starts_div">
-                <input type="checkbox" id="bot_starts">
-                <label for="bot_starts">Bot Starts</label>
-            </div>
-            <div>
-                <input type="radio" name = 'game_type' id="normal">
-                <label for="three_only">Normal</label>
-            </div>
-            <div>
-                <input type="radio" name = 'game_type' id="play_hard">
-                <label for="play_hard">Conversion</label>
-            </div>
-            <div>
-                <input type="radio" name = 'game_type' id="three_only">
-                <label for="three_only">3 Only</label>
+            <div id="checkbox_div2">
+                <div>
+                    <input type="radio" name = 'game_type' id="normal">
+                    <label for="three_only">Normal</label>
+                </div>
+                <div>
+                    <input type="radio" name = 'game_type' id="play_hard">
+                    <label for="play_hard">Convert</label>
+                </div>
+                <div>
+                    <input type="radio" name = 'game_type' id="three_only">
+                    <label for="three_only">3 Only</label>
+                </div>
             </div>
         </div>
         <div id="help">
@@ -68,7 +72,7 @@
     <div>
         <p  id="help_paragraph">
             <span><b>3 Only:</b> After O's third move, the first X is removed, and vice versa.</span>
-            <span><b>Conversion:</b> After O's third move, X can replace the first O with an X, and vice versa.</span>
+            <span><b>Conversion:</b> After O's third move, X can replace O with an X but not the last two, and vice versa.</span>
             <span><b>Bot Starts:</b> Press Restart</span>
         </p>
     </div>

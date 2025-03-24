@@ -137,7 +137,7 @@ function checkWin() {
                 gameBoard[a] == human ? bot_score_sheet.textContent = bot_score :  human_score_sheet.textContent = human_score;
             }else{
                 gameBoard[a] == human ? ++human_score :  ++bot_score;
-                gameBoard[a] == human ? human_score_sheet.textContent = human_score :  bot_score_sheet.textContent = bot_score;
+                gameBoard[a] == human ? (human_score_sheet.textContent = human_score , playMp3('/assets/winning2.mp3')) :  (bot_score_sheet.textContent = bot_score , playMp3('/assets/losing.mp3'));
             }
             return;
         };
@@ -322,6 +322,29 @@ function toggle(){ // to prevent the user from checking both 2 players and bot s
         two_players_div.style.display = 'block';
     }
 }
+
+async function playMp3(filePath) {
+    try {
+      const audioContext = new AudioContext();
+      const response = await fetch(filePath);
+      const arrayBuffer = await response.arrayBuffer();
+      const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+  
+      // Create a buffer source and play the audio.
+      const source = audioContext.createBufferSource();
+      source.buffer = audioBuffer;
+      source.connect(audioContext.destination);
+      source.start();
+  
+      // Optionally, you can handle the "ended" event:
+    //   source.onended = () => {
+    //     console.log('MP3 playback finished.');
+    //   };
+  
+    } catch (error) {
+      console.error('Error playing MP3:', error);
+    }
+  }
 
 two_players_checkbox .addEventListener('click', toggle)
 bot_starts_checkbox.addEventListener('click',toggle)
