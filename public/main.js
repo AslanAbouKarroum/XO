@@ -134,7 +134,7 @@ function checkWin() {
             game_check = false;
             if(bot_starts_checkbox.checked){
                 gameBoard[a] == human ? ++bot_score :  ++human_score;
-                gameBoard[a] == human ? bot_score_sheet.textContent = bot_score :  human_score_sheet.textContent = human_score;
+                gameBoard[a] == human ?(bot_score_sheet.textContent = bot_score, playMp3('/assets/winning2.mp3')) :  (human_score_sheet.textContent = human_score, playMp3('/assets/losing.mp3'));
             }else{
                 gameBoard[a] == human ? ++human_score :  ++bot_score;
                 gameBoard[a] == human ? (human_score_sheet.textContent = human_score , playMp3('/assets/winning2.mp3')) :  (bot_score_sheet.textContent = bot_score , playMp3('/assets/losing.mp3'));
