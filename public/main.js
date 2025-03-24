@@ -147,6 +147,7 @@ function checkWin() {
         message.textContent = 'It\'s a draw!';
         gameActive = false;
         game_check = false;
+        playMp3('/assets/draw.mp3');
     };
 };
 
